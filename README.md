@@ -1,25 +1,27 @@
 # Nova MCP
 
-Expose a [Laravel Nova](https://nova.laravel.com) admin panel to AI agents over the
-[Model Context Protocol](https://modelcontextprotocol.io). Every resource, lens,
-action, dashboard and the notification center becomes an MCP tool, and every call
-runs as an authenticated Nova user through your existing policies.
+Nova MCP gives AI agents a way into your [Laravel Nova](https://nova.laravel.com)
+panel over the [Model Context Protocol](https://modelcontextprotocol.io). Your
+resources, lenses, actions, dashboards, and notifications all become MCP tools.
+
+Every request runs as the Nova user who created the token, so your policies still
+do their job.
 
 ## Requirements
 
 - PHP 8.3+
-- Laravel 11, 12 or 13
-- Laravel Nova 5
+- Laravel 11, 12, or 13
+- Nova 5
 - [laravel/mcp](https://github.com/laravel/mcp)
 
-## Installation
+## Install
 
 ```bash
 composer require hemp/nova-mcp
 php artisan migrate
 ```
 
-Register the tool in your `NovaServiceProvider`:
+Then register the tool in your `NovaServiceProvider`:
 
 ```php
 use Hemp\NovaMcp\NovaMcp;
@@ -32,19 +34,67 @@ public function tools(): array
 }
 ```
 
-That is the whole install. A **Nova MCP** screen appears in Nova's sidebar,
-showing the published catalog and managing access tokens.
+You'll get a **Nova MCP** item in the Nova sidebar, where you can see the
+published tools and manage tokens.
 
-## Connecting a client
+## Make a token
 
-Authentication is a token minted from the Nova MCP screen in Nova. Tokens act
-as the user who minted them, are stored only as SHA-256 digests, may carry an
-expiry, and stop working the moment they are revoked — even mid-session.
+Head to the Nova MCP screen and create one. It acts as the user who created it,
+you can give it an expiry, and revoking it cuts off access right away, even
+mid-session. Only a SHA-256 digest of the token gets stored.
 
-**HTTP** — point the client at `https://your-app.test/nova-vendor/nova-mcp/mcp`
-with an `Authorization: Bearer <token>` header.
+## Connect a client
 
-**stdio** — for local agents such as Claude Desktop:
+The package serves both transports. Over HTTP, point your client at:
+
+```text
+https://your-app.test/nova-vendor/nova-mcp/mcp
+```
+
+with the token in the authorization header:
+
+```http
+Authorization: Bearer <token>
+```
+
+Locally, run the server over stdio with `php artisan mcp:start nova` and pass the
+token as `NOVA_MCP_TOKEN`.
+
+### Claude Code
+
+Over HTTP:
+
+```bash
+claude mcp add --transport http nova https://your-app.test/nova-vendor/nova-mcp/mcp \
+  --header "Authorization: Bearer novamcp_..."
+```
+
+Or over stdio, straight against your local app:
+
+```bash
+claude mcp add --env NOVA_MCP_TOKEN=novamcp_... --transport stdio nova \
+  -- php /path/to/your-app/artisan mcp:start nova
+```
+
+### Codex
+
+```bash
+codex mcp add nova --env NOVA_MCP_TOKEN=novamcp_... \
+  -- php /path/to/your-app/artisan mcp:start nova
+```
+
+For the HTTP transport, add it to `~/.codex/config.toml` yourself. The bearer
+token is read from an environment variable, not written in the file:
+
+```toml
+[mcp_servers.nova]
+url = "https://your-app.test/nova-vendor/nova-mcp/mcp"
+bearer_token_env_var = "NOVA_MCP_TOKEN"
+```
+
+### Claude Desktop
+
+Drop this in your config and fix up the path:
 
 ```json
 {
@@ -58,25 +108,27 @@ with an `Authorization: Bearer <token>` header.
 }
 ```
 
-## What gets published
+## What the client sees
 
-Two orientation tools are always listed directly:
+Two tools are always there:
 
-| Tool | Purpose |
+| Tool | What it does |
 | --- | --- |
-| `nova_overview` | Resources, dashboards, capabilities and the acting user |
-| `nova_resource_schema` | Fields, validation rules, filters, lenses and actions for one resource |
+| `nova_overview` | Lists resources, dashboards, capabilities, and the current user |
+| `nova_resource_schema` | Fields, validation rules, filters, lenses, and actions for one resource |
 
-Everything else is generated from what Nova has registered, named
-`nova_<resource>_<operation>` — `nova_posts_list`, `nova_posts_get`,
-`nova_posts_create`, `nova_posts_action_publish`,
-`nova_posts_lens_most_viewed`, `nova_dashboard_main`, and so on. Catalogs
-larger than the configured threshold are published behind Laravel MCP's
-`search_tools` / `execute_tools` pair so a client's tool list stays manageable.
+The rest come from your registered resources, named
+`nova_<resource>_<operation>`. So you'll see things like `nova_posts_list`,
+`nova_posts_get`, `nova_posts_create`, `nova_posts_action_publish`,
+`nova_posts_lens_most_viewed`, and `nova_dashboard_main`.
 
-The catalog is rebuilt from Nova's live registration on every call, so a
-resource added while a server is running appears on the next request, and the
-server announces the change via `tools/list_changed`.
+Once the catalog gets big enough (40 tools by default), Laravel MCP puts it
+behind `search_tools` and `execute_tools` so the client isn't drowning in a tool
+list.
+
+The catalog is rebuilt from Nova's live registration on every request. Add a
+resource while the server is running and it shows up on the next request, along
+with a `tools/list_changed` notification.
 
 ## Configuration
 
@@ -84,25 +136,24 @@ server announces the change via `tools/list_changed`.
 php artisan vendor:publish --tag=nova-mcp-config
 ```
 
-Notable options in `config/nova-mcp.php`:
+The interesting bits of `config/nova-mcp.php`:
 
-| Key | Default | Purpose |
+| Key | Default | What it does |
 | --- | --- | --- |
-| `writes` | `true` | Publish create / update / delete tools |
+| `writes` | `true` | Publish create, update, and delete tools |
 | `actions` | `true` | Publish Nova action tools |
-| `web.enabled` / `local.enabled` | `true` | Toggle each transport |
-| `tool_search_threshold` | `40` | Catalog size before tool search engages |
-| `resources.only` / `resources.except` | `[]` | Limit which resources are published |
+| `web.enabled` / `local.enabled` | `true` | Turn each transport on or off |
+| `tool_search_threshold` | `40` | Catalog size that switches on tool search |
+| `resources.only` / `resources.except` | `[]` | Limit which resources get published |
 
-## Security model
+## Security
 
-- Both transports require a minted token; there is no unauthenticated path.
-  An empty middleware stack refuses to register the endpoint rather than
-  serving it open.
-- Every call is subject to Nova's own authorization — the `viewNova` gate and
-  your resource policies — so a tool can exist and still refuse.
-- Deletion tools report exactly which records were affected and which were
-  skipped, rather than assuming the request succeeded.
+Both transports need a token. If the middleware stack ends up empty, Nova MCP
+refuses to register the endpoint rather than leave it open.
+
+Requests go through Nova's `viewNova` gate and your resource policies, so a tool
+can show up in the catalog and still turn down the request if the user isn't
+allowed. Delete tools tell you what they changed and what they skipped.
 
 ## Testing
 
