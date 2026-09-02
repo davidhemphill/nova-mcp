@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace NovaAi\McpTools;
+namespace Hemp\NovaMcp;
 
+use Hemp\NovaMcp\Http\Middleware\Authorize;
+use Hemp\NovaMcp\Mcp\NovaServer;
+use Hemp\NovaMcp\Nova\NovaContext;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Mcp\Facades\Mcp;
 use Laravel\Nova\Http\Middleware\Authorize as NovaAuthorize;
 use Laravel\Nova\Nova;
-use NovaAi\McpTools\Http\Middleware\Authorize;
-use NovaAi\McpTools\Mcp\NovaServer;
-use NovaAi\McpTools\Nova\NovaContext;
 
 class ToolServiceProvider extends ServiceProvider
 {

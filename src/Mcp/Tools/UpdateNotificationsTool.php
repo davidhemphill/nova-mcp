@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace NovaAi\McpTools\Mcp\Tools;
+namespace Hemp\NovaMcp\Mcp\Tools;
 
+use Hemp\NovaMcp\Mcp\Contracts\DescribesNovaSubject;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Nova\Http\Requests\NotificationRequest;
 use Laravel\Nova\Notifications\Notification;
-use NovaAi\McpTools\Mcp\Contracts\DescribesNovaSubject;
 
 class UpdateNotificationsTool extends NovaTool implements DescribesNovaSubject
 {

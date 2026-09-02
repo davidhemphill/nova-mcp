@@ -1,8 +1,8 @@
 <?php
 
+use Hemp\NovaMcp\Http\Controllers\CatalogController;
+use Hemp\NovaMcp\Http\Controllers\TokenController;
 use Illuminate\Support\Facades\Route;
-use NovaAi\McpTools\Http\Controllers\CatalogController;
-use NovaAi\McpTools\Http\Controllers\TokenController;
 
 /*
 |--------------------------------------------------------------------------

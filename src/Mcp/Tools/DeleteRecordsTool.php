@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace NovaAi\McpTools\Mcp\Tools;
+namespace Hemp\NovaMcp\Mcp\Tools;
 
 use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
 use Laravel\Nova\Http\Requests\DeleteResourceRequest;

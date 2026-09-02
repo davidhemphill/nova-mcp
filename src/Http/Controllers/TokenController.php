@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace NovaAi\McpTools\Http\Controllers;
+namespace Hemp\NovaMcp\Http\Controllers;
 
+use Hemp\NovaMcp\Models\McpToken;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use NovaAi\McpTools\Models\McpToken;
 
 /**
  * Mints and revokes the tokens that authenticate the MCP server.

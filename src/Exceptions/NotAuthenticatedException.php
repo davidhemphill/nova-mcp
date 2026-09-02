@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace NovaAi\McpTools\Exceptions;
+namespace Hemp\NovaMcp\Exceptions;
 
 use RuntimeException;
 

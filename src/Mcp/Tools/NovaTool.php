@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace NovaAi\McpTools\Mcp\Tools;
+namespace Hemp\NovaMcp\Mcp\Tools;
 
 use Closure;
+use Hemp\NovaMcp\Nova\NovaContext;
+use Hemp\NovaMcp\Nova\Schema;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Pagination\Paginator;
@@ -12,8 +14,6 @@ use Illuminate\Validation\ValidationException;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Nova\Filters\FilterEncoder;
-use NovaAi\McpTools\Nova\NovaContext;
-use NovaAi\McpTools\Nova\Schema;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Throwable;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace NovaAi\McpTools\Models;
+namespace Hemp\NovaMcp\Models;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Builder;

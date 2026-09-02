@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace NovaAi\McpTools;
+namespace Hemp\NovaMcp;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Menu\MenuSection;

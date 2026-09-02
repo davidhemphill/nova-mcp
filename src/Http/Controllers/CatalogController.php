@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace NovaAi\McpTools\Http\Controllers;
+namespace Hemp\NovaMcp\Http\Controllers;
 
+use Hemp\NovaMcp\Mcp\Contracts\DescribesNovaSubject;
+use Hemp\NovaMcp\Nova\Catalog;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Laravel\Mcp\Server\Tool;
-use NovaAi\McpTools\Mcp\Contracts\DescribesNovaSubject;
-use NovaAi\McpTools\Nova\Catalog;
 
 /**
  * Backs the tool's Nova screen: the same catalog the MCP server publishes.

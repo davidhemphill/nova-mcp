@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace NovaAi\McpTools\Mcp\Tools;
+namespace Hemp\NovaMcp\Mcp\Tools;
 
+use Hemp\NovaMcp\Nova\NovaContext;
+use Hemp\NovaMcp\Nova\Schema;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\Contracts\Support\Arrayable;
 use JsonSerializable;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Nova\Http\Requests\ActionRequest;
-use NovaAi\McpTools\Nova\NovaContext;
-use NovaAi\McpTools\Nova\Schema;
 
 class RunActionTool extends ResourceTool
 {

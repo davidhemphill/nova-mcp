@@ -2,8 +2,20 @@
 
 declare(strict_types=1);
 
-namespace NovaAi\McpTools\Nova;
+namespace Hemp\NovaMcp\Nova;
 
+use Hemp\NovaMcp\Mcp\Tools\CreateRecordTool;
+use Hemp\NovaMcp\Mcp\Tools\DashboardTool;
+use Hemp\NovaMcp\Mcp\Tools\DeleteRecordsTool;
+use Hemp\NovaMcp\Mcp\Tools\ForceDeleteRecordsTool;
+use Hemp\NovaMcp\Mcp\Tools\GetRecordTool;
+use Hemp\NovaMcp\Mcp\Tools\ListRecordsTool;
+use Hemp\NovaMcp\Mcp\Tools\NotificationsTool;
+use Hemp\NovaMcp\Mcp\Tools\RestoreRecordsTool;
+use Hemp\NovaMcp\Mcp\Tools\RunActionTool;
+use Hemp\NovaMcp\Mcp\Tools\RunLensTool;
+use Hemp\NovaMcp\Mcp\Tools\UpdateNotificationsTool;
+use Hemp\NovaMcp\Mcp\Tools\UpdateRecordTool;
 use Illuminate\Support\Collection;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Nova\Actions\Action;
@@ -14,18 +26,6 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Lenses\Lens;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Resource;
-use NovaAi\McpTools\Mcp\Tools\CreateRecordTool;
-use NovaAi\McpTools\Mcp\Tools\DashboardTool;
-use NovaAi\McpTools\Mcp\Tools\DeleteRecordsTool;
-use NovaAi\McpTools\Mcp\Tools\ForceDeleteRecordsTool;
-use NovaAi\McpTools\Mcp\Tools\GetRecordTool;
-use NovaAi\McpTools\Mcp\Tools\ListRecordsTool;
-use NovaAi\McpTools\Mcp\Tools\NotificationsTool;
-use NovaAi\McpTools\Mcp\Tools\RestoreRecordsTool;
-use NovaAi\McpTools\Mcp\Tools\RunActionTool;
-use NovaAi\McpTools\Mcp\Tools\RunLensTool;
-use NovaAi\McpTools\Mcp\Tools\UpdateNotificationsTool;
-use NovaAi\McpTools\Mcp\Tools\UpdateRecordTool;
 
 /**
  * Turns everything registered with Nova into the MCP tool catalog.

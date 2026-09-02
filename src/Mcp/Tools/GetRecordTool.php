@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace NovaAi\McpTools\Mcp\Tools;
+namespace Hemp\NovaMcp\Mcp\Tools;
 
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Laravel\Mcp\Request;

@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace NovaAi\McpTools\Mcp;
+namespace Hemp\NovaMcp\Mcp;
 
+use Hemp\NovaMcp\Exceptions\NotAuthenticatedException;
+use Hemp\NovaMcp\Mcp\Tools\OverviewTool;
+use Hemp\NovaMcp\Mcp\Tools\ResourceSchemaTool;
+use Hemp\NovaMcp\Nova\Catalog;
+use Hemp\NovaMcp\Nova\NovaContext;
+use Hemp\NovaMcp\Nova\Schema;
 use Laravel\Mcp\Server;
 use Laravel\Mcp\Server\ServerContext;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\ToolSearch;
-use NovaAi\McpTools\Exceptions\NotAuthenticatedException;
-use NovaAi\McpTools\Mcp\Tools\OverviewTool;
-use NovaAi\McpTools\Mcp\Tools\ResourceSchemaTool;
-use NovaAi\McpTools\Nova\Catalog;
-use NovaAi\McpTools\Nova\NovaContext;
-use NovaAi\McpTools\Nova\Schema;
 
 /**
  * The MCP server backing the Nova "MCP Tools" tool.

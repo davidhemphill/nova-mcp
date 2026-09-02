@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace NovaAi\McpTools\Nova;
+namespace Hemp\NovaMcp\Nova;
 
 use Closure;
 use Illuminate\Container\Container;

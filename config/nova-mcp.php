@@ -1,8 +1,8 @@
 <?php
 
+use Hemp\NovaMcp\Http\Middleware\AuthenticateMcpToken;
+use Hemp\NovaMcp\Http\Middleware\Authorize;
 use Laravel\Nova\Http\Middleware\Authorize as NovaAuthorize;
-use NovaAi\McpTools\Http\Middleware\AuthenticateMcpToken;
-use NovaAi\McpTools\Http\Middleware\Authorize;
 
 return [
 

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace NovaAi\McpTools\Http\Middleware;
+namespace Hemp\NovaMcp\Http\Middleware;
 
 use Closure;
+use Hemp\NovaMcp\McpTools;
 use Illuminate\Http\Request;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
-use NovaAi\McpTools\McpTools;
 use Symfony\Component\HttpFoundation\Response;
 
 class Authorize

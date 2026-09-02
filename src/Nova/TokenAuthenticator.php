@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace NovaAi\McpTools\Nova;
+namespace Hemp\NovaMcp\Nova;
 
+use Hemp\NovaMcp\Models\McpToken;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
 use Laravel\Nova\Util;
-use NovaAi\McpTools\Models\McpToken;
 
 /**
  * Resolves the Nova user behind an MCP token.

@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace NovaAi\McpTools\Nova;
+namespace Hemp\NovaMcp\Nova;
 
 use Closure;
+use Hemp\NovaMcp\Exceptions\NotAuthenticatedException;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Routing\Route;
@@ -13,7 +14,6 @@ use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Util;
-use NovaAi\McpTools\Exceptions\NotAuthenticatedException;
 use RuntimeException;
 
 /**

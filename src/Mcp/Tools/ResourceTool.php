@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace NovaAi\McpTools\Mcp\Tools;
+namespace Hemp\NovaMcp\Mcp\Tools;
 
+use Hemp\NovaMcp\Mcp\Contracts\DescribesNovaSubject;
+use Hemp\NovaMcp\Nova\NovaContext;
+use Hemp\NovaMcp\Nova\Schema;
 use Laravel\Nova\Resource;
-use NovaAi\McpTools\Mcp\Contracts\DescribesNovaSubject;
-use NovaAi\McpTools\Nova\NovaContext;
-use NovaAi\McpTools\Nova\Schema;
 
 /**
  * Base for the tools that are generated once per Nova resource.

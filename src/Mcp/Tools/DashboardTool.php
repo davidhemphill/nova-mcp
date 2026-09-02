@@ -2,8 +2,11 @@
 
 declare(strict_types=1);
 
-namespace NovaAi\McpTools\Mcp\Tools;
+namespace Hemp\NovaMcp\Mcp\Tools;
 
+use Hemp\NovaMcp\Mcp\Contracts\DescribesNovaSubject;
+use Hemp\NovaMcp\Nova\NovaContext;
+use Hemp\NovaMcp\Nova\Schema;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
@@ -13,9 +16,6 @@ use Laravel\Nova\Card;
 use Laravel\Nova\Http\Requests\DashboardMetricRequest;
 use Laravel\Nova\Metrics\Metric;
 use Laravel\Nova\Nova;
-use NovaAi\McpTools\Mcp\Contracts\DescribesNovaSubject;
-use NovaAi\McpTools\Nova\NovaContext;
-use NovaAi\McpTools\Nova\Schema;
 use Throwable;
 
 #[IsReadOnly]

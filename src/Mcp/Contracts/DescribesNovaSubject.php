@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace NovaAi\McpTools\Mcp\Contracts;
+namespace Hemp\NovaMcp\Mcp\Contracts;
 
 /**
  * Implemented by catalog tools so the overview can group them by what they act on.

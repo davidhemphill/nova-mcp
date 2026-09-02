@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace NovaAi\McpTools\Http\Middleware;
+namespace Hemp\NovaMcp\Http\Middleware;
 
 use Closure;
+use Hemp\NovaMcp\Nova\TokenAuthenticator;
 use Illuminate\Http\Request;
-use NovaAi\McpTools\Nova\TokenAuthenticator;
 use Symfony\Component\HttpFoundation\Response;
 
 /**

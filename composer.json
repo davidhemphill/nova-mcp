@@ -1,5 +1,5 @@
 {
-    "name": "nova-ai/mcp-tools",
+    "name": "hemp/nova-mcp",
     "description": "Exposes Laravel Nova dashboards, resources, lenses, actions and notifications as MCP tools.",
     "keywords": [
         "laravel",
@@ -20,7 +20,10 @@
     },
     "require-dev": {
         "laravel/nova": "^5.0",
-        "laravel/nova-devtool": "^1.7"
+        "laravel/nova-devtool": "^1.7",
+        "laravel/pint": "^1.24",
+        "orchestra/testbench": "^11.0",
+        "phpunit/phpunit": "^12.5"
     },
     "repositories": [
         {
@@ -30,19 +33,31 @@
     ],
     "autoload": {
         "psr-4": {
-            "NovaAi\\McpTools\\": "src/"
+            "Hemp\\NovaMcp\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "NovaAi\\McpTools\\ToolServiceProvider"
+                "Hemp\\NovaMcp\\ToolServiceProvider"
             ]
         }
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "autoload-dev": {
+        "psr-4": {
+            "Hemp\\NovaMcp\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "lint": "pint"
+    }
 }
