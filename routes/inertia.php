@@ -12,4 +12,4 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 |
 */
 
-Route::get('/', fn (NovaRequest $request) => inertia('McpTools'));
+Route::get('/', fn (NovaRequest $request) => inertia('NovaMcp'));

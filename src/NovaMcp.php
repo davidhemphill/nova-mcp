@@ -9,7 +9,7 @@ use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
 
-class McpTools extends Tool
+class NovaMcp extends Tool
 {
     /**
      * Perform any tasks that need to happen when the tool is booted.
@@ -19,7 +19,7 @@ class McpTools extends Tool
         $manifest = __DIR__.'/../dist/mix-manifest.json';
 
         if (file_exists($manifest)) {
-            Nova::mix('mcp-tools', $manifest);
+            Nova::mix('nova-mcp', $manifest);
         }
     }
 
@@ -28,8 +28,8 @@ class McpTools extends Tool
      */
     public function menu(Request $request): MenuSection
     {
-        return MenuSection::make('MCP Tools')
-            ->path('/mcp-tools')
+        return MenuSection::make('Nova MCP')
+            ->path('/nova-mcp')
             ->icon('server');
     }
 }

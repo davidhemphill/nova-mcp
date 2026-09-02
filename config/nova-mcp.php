@@ -24,8 +24,8 @@ return [
     | Token
     |--------------------------------------------------------------------------
     |
-    | The token the stdio transport authenticates with. Mint one from the MCP
-    | Tools screen in Nova. Prefer setting it in the MCP client's own
+    | The token the stdio transport authenticates with. Mint one from the
+    | Nova MCP screen in Nova. Prefer setting it in the MCP client's own
     | configuration over this application's .env, so each agent carries
     | its own revocable identity.
     |
@@ -46,7 +46,7 @@ return [
 
     'web' => [
         'enabled' => env('NOVA_MCP_WEB', true),
-        'route' => env('NOVA_MCP_ROUTE', 'nova-vendor/mcp-tools/mcp'),
+        'route' => env('NOVA_MCP_ROUTE', 'nova-vendor/nova-mcp/mcp'),
 
         'middleware' => [
             'nova:serving',

@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/catalog', CatalogController::class)->name('mcp-tools.catalog');
+Route::get('/catalog', CatalogController::class)->name('nova-mcp.catalog');
 
-Route::get('/tokens', [TokenController::class, 'index'])->name('mcp-tools.tokens.index');
-Route::post('/tokens', [TokenController::class, 'store'])->name('mcp-tools.tokens.store');
-Route::delete('/tokens/{token}', [TokenController::class, 'destroy'])->name('mcp-tools.tokens.destroy');
+Route::get('/tokens', [TokenController::class, 'index'])->name('nova-mcp.tokens.index');
+Route::post('/tokens', [TokenController::class, 'store'])->name('nova-mcp.tokens.store');
+Route::delete('/tokens/{token}', [TokenController::class, 'destroy'])->name('nova-mcp.tokens.destroy');

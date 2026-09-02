@@ -2,7 +2,7 @@
 
 namespace Hemp\NovaMcp\Tests\Fixtures;
 
-use Hemp\NovaMcp\McpTools;
+use Hemp\NovaMcp\NovaMcp;
 use Hemp\NovaMcp\Tests\Fixtures\Nova\ArticleResource;
 use Hemp\NovaMcp\Tests\Fixtures\Nova\Main;
 use Hemp\NovaMcp\Tests\Fixtures\Nova\TagResource;
@@ -28,7 +28,7 @@ class NovaServiceProvider extends ServiceProvider
             ]);
 
             Nova::dashboards([new Main]);
-            Nova::tools([new McpTools]);
+            Nova::tools([new NovaMcp]);
         });
 
         Gate::define('viewNova', static fn (object $user): bool => in_array($user->email, [

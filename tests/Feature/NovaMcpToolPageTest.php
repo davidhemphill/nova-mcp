@@ -18,14 +18,14 @@ class NovaMcpToolPageTest extends TestCase
         $user = User::factory()->create(['email' => 'hemp@hey.com']);
 
         $response = $this->actingAs($user)
-            ->postJson('/nova-vendor/mcp-tools/tokens', ['name' => 'Claude Desktop'])
+            ->postJson('/nova-vendor/nova-mcp/tokens', ['name' => 'Claude Desktop'])
             ->assertCreated()
             ->assertJsonPath('name', 'Claude Desktop');
 
         $this->assertStringStartsWith(McpToken::PREFIX, $response->json('token'));
 
         $this->actingAs($user)
-            ->getJson('/nova-vendor/mcp-tools/tokens')
+            ->getJson('/nova-vendor/nova-mcp/tokens')
             ->assertOk()
             ->assertJsonPath('tokens.0.name', 'Claude Desktop')
             ->assertJsonMissingPath('tokens.0.token');
@@ -37,7 +37,7 @@ class NovaMcpToolPageTest extends TestCase
         $user = User::factory()->create(['email' => 'hemp@hey.com']);
 
         $this->actingAs($user)
-            ->postJson('/nova-vendor/mcp-tools/tokens', [
+            ->postJson('/nova-vendor/nova-mcp/tokens', [
                 'name' => 'Short lived',
                 'expires_in_days' => 7,
             ])
@@ -55,7 +55,7 @@ class NovaMcpToolPageTest extends TestCase
         $token = McpToken::mint($user, 'Doomed');
 
         $this->actingAs($user)
-            ->deleteJson('/nova-vendor/mcp-tools/tokens/'.$token->getKey())
+            ->deleteJson('/nova-vendor/nova-mcp/tokens/'.$token->getKey())
             ->assertOk();
 
         $this->assertDatabaseMissing('nova_mcp_tokens', ['id' => $token->getKey()]);
@@ -69,7 +69,7 @@ class NovaMcpToolPageTest extends TestCase
         $token = McpToken::mint($other, 'Not yours');
 
         $this->actingAs($owner)
-            ->deleteJson('/nova-vendor/mcp-tools/tokens/'.$token->getKey())
+            ->deleteJson('/nova-vendor/nova-mcp/tokens/'.$token->getKey())
             ->assertOk();
 
         $this->assertDatabaseHas('nova_mcp_tokens', ['id' => $token->getKey()]);
@@ -85,7 +85,7 @@ class NovaMcpToolPageTest extends TestCase
         McpToken::mint($other, 'Theirs');
 
         $this->actingAs($owner)
-            ->getJson('/nova-vendor/mcp-tools/tokens')
+            ->getJson('/nova-vendor/nova-mcp/tokens')
             ->assertOk()
             ->assertJsonCount(1, 'tokens')
             ->assertJsonPath('tokens.0.name', 'Mine');
@@ -97,7 +97,7 @@ class NovaMcpToolPageTest extends TestCase
         $user = User::factory()->create(['email' => 'stranger@example.com']);
 
         $this->actingAs($user)
-            ->postJson('/nova-vendor/mcp-tools/tokens', ['name' => 'Nope'])
+            ->postJson('/nova-vendor/nova-mcp/tokens', ['name' => 'Nope'])
             ->assertForbidden();
     }
 
@@ -107,7 +107,7 @@ class NovaMcpToolPageTest extends TestCase
         $user = User::factory()->create(['email' => 'hemp@hey.com']);
 
         $this->actingAs($user)
-            ->getJson('/nova-vendor/mcp-tools/catalog')
+            ->getJson('/nova-vendor/nova-mcp/catalog')
             ->assertOk()
             ->assertJsonPath('capabilities.writes', true)
             ->assertJsonPath('transports.local.handle', 'nova')
@@ -120,7 +120,7 @@ class NovaMcpToolPageTest extends TestCase
         $user = User::factory()->create(['email' => 'stranger@example.com']);
 
         $this->actingAs($user)
-            ->getJson('/nova-vendor/mcp-tools/catalog')
+            ->getJson('/nova-vendor/nova-mcp/catalog')
             ->assertForbidden();
     }
 
@@ -130,14 +130,14 @@ class NovaMcpToolPageTest extends TestCase
         $user = User::factory()->create(['email' => 'hemp@hey.com']);
 
         $this->actingAs($user)
-            ->get('/nova/mcp-tools')
+            ->get('/nova/nova-mcp')
             ->assertOk()
-            ->assertSee('McpTools', escape: false);
+            ->assertSee('NovaMcp', escape: false);
     }
 
     #[Test]
     public function it_refuses_guests(): void
     {
-        $this->getJson('/nova-vendor/mcp-tools/catalog')->assertUnauthorized();
+        $this->getJson('/nova-vendor/nova-mcp/catalog')->assertUnauthorized();
     }
 }

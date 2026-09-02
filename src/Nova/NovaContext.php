@@ -144,7 +144,7 @@ class NovaContext
 
         if ($user === null) {
             throw new NotAuthenticatedException(
-                'The MCP server is not authenticated. Mint a token from the MCP Tools screen in Nova and pass it as NOVA_MCP_TOKEN.'
+                'The MCP server is not authenticated. Mint a token from the Nova MCP screen in Nova and pass it as NOVA_MCP_TOKEN.'
             );
         }
 

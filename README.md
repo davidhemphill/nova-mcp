@@ -22,26 +22,26 @@ php artisan migrate
 Register the tool in your `NovaServiceProvider`:
 
 ```php
-use Hemp\NovaMcp\McpTools;
+use Hemp\NovaMcp\NovaMcp;
 
 public function tools(): array
 {
     return [
-        new McpTools,
+        new NovaMcp,
     ];
 }
 ```
 
-That is the whole install. An **MCP Tools** screen appears in Nova's sidebar,
+That is the whole install. A **Nova MCP** screen appears in Nova's sidebar,
 showing the published catalog and managing access tokens.
 
 ## Connecting a client
 
-Authentication is a token minted from the MCP Tools screen in Nova. Tokens act
+Authentication is a token minted from the Nova MCP screen in Nova. Tokens act
 as the user who minted them, are stored only as SHA-256 digests, may carry an
 expiry, and stop working the moment they are revoked — even mid-session.
 
-**HTTP** — point the client at `https://your-app.test/nova-vendor/mcp-tools/mcp`
+**HTTP** — point the client at `https://your-app.test/nova-vendor/nova-mcp/mcp`
 with an `Authorization: Bearer <token>` header.
 
 **stdio** — for local agents such as Claude Desktop:

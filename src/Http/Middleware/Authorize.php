@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Hemp\NovaMcp\Http\Middleware;
 
 use Closure;
-use Hemp\NovaMcp\McpTools;
+use Hemp\NovaMcp\NovaMcp;
 use Illuminate\Http\Request;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
@@ -38,6 +38,6 @@ class Authorize
      */
     public function matchesTool(Tool $tool): bool
     {
-        return $tool instanceof McpTools;
+        return $tool instanceof NovaMcp;
     }
 }

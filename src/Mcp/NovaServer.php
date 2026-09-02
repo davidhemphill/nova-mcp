@@ -16,7 +16,7 @@ use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\ToolSearch;
 
 /**
- * The MCP server backing the Nova "MCP Tools" tool.
+ * The MCP server backing the Nova "Nova MCP" tool.
  *
  * An overview and a schema reader are always published. Everything Nova
  * registers — resources, lenses, actions, dashboards and notifications — becomes

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <Head title="MCP Tools" />
+    <Head title="Nova MCP" />
 
-    <Heading class="mb-6">MCP Tools</Heading>
+    <Heading class="mb-6">Nova MCP</Heading>
 
     <p class="mb-6 text-gray-500 dark:text-gray-400">
       Everything registered with Nova &mdash; resources, lenses, actions,
@@ -203,7 +203,7 @@ export default {
 
   mounted() {
     Nova.request()
-      .get('/nova-vendor/mcp-tools/catalog')
+      .get('/nova-vendor/nova-mcp/catalog')
       .then(({ data }) => (this.catalog = data))
       .catch(() => (this.error = 'The MCP catalog could not be loaded.'))
       .finally(() => (this.loading = false))
@@ -214,7 +214,7 @@ export default {
   methods: {
     loadTokens() {
       Nova.request()
-        .get('/nova-vendor/mcp-tools/tokens')
+        .get('/nova-vendor/nova-mcp/tokens')
         .then(({ data }) => (this.tokens = data.tokens))
     },
 
@@ -226,7 +226,7 @@ export default {
       this.creating = true
 
       Nova.request()
-        .post('/nova-vendor/mcp-tools/tokens', { name: this.tokenName })
+        .post('/nova-vendor/nova-mcp/tokens', { name: this.tokenName })
         .then(({ data }) => {
           this.issuedToken = data.token
           this.tokenName = ''
@@ -238,7 +238,7 @@ export default {
 
     revokeToken(token) {
       Nova.request()
-        .delete(`/nova-vendor/mcp-tools/tokens/${token.id}`)
+        .delete(`/nova-vendor/nova-mcp/tokens/${token.id}`)
         .then(() => {
           this.tokens = this.tokens.filter(candidate => candidate.id !== token.id)
           Nova.success(`Revoked ${token.name}.`)

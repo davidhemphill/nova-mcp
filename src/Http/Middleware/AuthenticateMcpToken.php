@@ -34,7 +34,7 @@ class AuthenticateMcpToken
         if ($user === null) {
             return response()->json([
                 'error' => 'invalid_token',
-                'error_description' => 'A valid Nova MCP token is required. Mint one from the MCP Tools screen in Nova.',
+                'error_description' => 'A valid Nova MCP token is required. Mint one from the Nova MCP screen in Nova.',
             ], 401, ['WWW-Authenticate' => 'Bearer realm="nova-mcp", error="invalid_token"']);
         }
 

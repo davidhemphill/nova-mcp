@@ -44,11 +44,11 @@ class ToolServiceProvider extends ServiceProvider
             return;
         }
 
-        Nova::router($this->middleware(), 'mcp-tools')
+        Nova::router($this->middleware(), 'nova-mcp')
             ->group(__DIR__.'/../routes/inertia.php');
 
         Route::middleware($this->middleware())
-            ->prefix('nova-vendor/mcp-tools')
+            ->prefix('nova-vendor/nova-mcp')
             ->group(__DIR__.'/../routes/api.php');
     }
 
@@ -97,7 +97,7 @@ class ToolServiceProvider extends ServiceProvider
 
         Route::middleware($middleware)
             ->group(function (): void {
-                Mcp::web((string) config('nova-mcp.web.route', 'nova-vendor/mcp-tools/mcp'), NovaServer::class);
+                Mcp::web((string) config('nova-mcp.web.route', 'nova-vendor/nova-mcp/mcp'), NovaServer::class);
             });
     }
 
