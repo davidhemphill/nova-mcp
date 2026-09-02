@@ -6,6 +6,11 @@
         "nova",
         "mcp"
     ],
+    "homepage": "https://github.com/davidhemphill/nova-mcp",
+    "support": {
+        "issues": "https://github.com/davidhemphill/nova-mcp/issues",
+        "source": "https://github.com/davidhemphill/nova-mcp"
+    },
     "license": "MIT",
     "authors": [
         {
