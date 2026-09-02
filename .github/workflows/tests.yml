@@ -1,0 +1,42 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4', '8.5']
+
+    name: PHP ${{ matrix.php }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip, pdo_sqlite, sqlite3
+          coverage: none
+
+      # Nova is a private composer package; the credentials live in repo
+      # secrets and land in a local auth.json, which is gitignored.
+      - name: Authenticate against nova.laravel.com
+        run: composer config http-basic.nova.laravel.com "${{ secrets.NOVA_USERNAME }}" "${{ secrets.NOVA_LICENSE_KEY }}"
+
+      # No lockfile is committed, so this resolves fresh — which is what a
+      # library wants: CI proves the constraints, not a snapshot.
+      - name: Install dependencies
+        run: composer update --prefer-dist --no-interaction --no-progress
+
+      - name: Lint
+        run: vendor/bin/pint --test
+
+      - name: Tests
+        run: composer test

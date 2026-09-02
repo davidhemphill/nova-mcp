@@ -226,7 +226,7 @@ class NovaMcpToolsTest extends TestCase
     }
 
     #[Test]
-    public function it_reads_the_notification_centre(): void
+    public function it_reads_the_notification_center(): void
     {
         $this->tool('nova_notifications')
             ->assertOk()

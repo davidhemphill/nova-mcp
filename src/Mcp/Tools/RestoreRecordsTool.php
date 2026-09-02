@@ -24,7 +24,7 @@ class RestoreRecordsTool extends DeletionTool
 
     public function description(): string
     {
-        return sprintf('Restore soft deleted %s records through Nova, honouring the resource\'s restore policy.', $this->label());
+        return sprintf('Restore soft deleted %s records through Nova, honoring the resource\'s restore policy.', $this->label());
     }
 
     protected function requestClass(): string

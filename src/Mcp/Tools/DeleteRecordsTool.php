@@ -25,7 +25,7 @@ class DeleteRecordsTool extends DeletionTool
     public function description(): string
     {
         return sprintf(
-            'Delete %s records through Nova, honouring the resource\'s delete policy, field deletion callbacks and action events. Soft deleting resources are trashed rather than removed.',
+            'Delete %s records through Nova, honoring the resource\'s delete policy, field deletion callbacks and action events. Soft deleting resources are trashed rather than removed.',
             $this->label(),
         );
     }

@@ -2,7 +2,7 @@
 
 Expose a [Laravel Nova](https://nova.laravel.com) admin panel to AI agents over the
 [Model Context Protocol](https://modelcontextprotocol.io). Every resource, lens,
-action, dashboard and the notification centre becomes an MCP tool, and every call
+action, dashboard and the notification center becomes an MCP tool, and every call
 runs as an authenticated Nova user through your existing policies.
 
 ## Requirements

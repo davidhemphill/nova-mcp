@@ -31,7 +31,7 @@ class NotificationsTool extends NovaTool implements DescribesNovaSubject
 
     public function description(): string
     {
-        return 'Read the Nova notification centre for the current user: the latest notifications with their message, type, action link and read state, plus the unread count.';
+        return 'Read the Nova notification center for the current user: the latest notifications with their message, type, action link and read state, plus the unread count.';
     }
 
     /**
