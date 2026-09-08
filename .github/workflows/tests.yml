@@ -9,6 +9,13 @@ jobs:
   tests:
     runs-on: ubuntu-latest
 
+    # Nova is a paid, private package and its credentials live in repository
+    # secrets, which GitHub withholds from pull requests opened off a fork.
+    # Running anyway would fail at the authentication step for a reason no
+    # contributor can fix, so skip instead and let a maintainer run the suite
+    # against the merge.
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+
     strategy:
       fail-fast: false
       matrix:
@@ -25,10 +32,18 @@ jobs:
           extensions: dom, curl, libxml, mbstring, zip, pdo_sqlite, sqlite3
           coverage: none
 
-      # Nova is a private composer package; the credentials live in repo
-      # secrets and land in a local auth.json, which is gitignored.
+      # The credentials land in a local auth.json, which is gitignored.
       - name: Authenticate against nova.laravel.com
-        run: composer config http-basic.nova.laravel.com "${{ secrets.NOVA_USERNAME }}" "${{ secrets.NOVA_LICENSE_KEY }}"
+        env:
+          NOVA_USERNAME: ${{ secrets.NOVA_USERNAME }}
+          NOVA_LICENSE_KEY: ${{ secrets.NOVA_LICENSE_KEY }}
+        run: |
+          if [ -z "$NOVA_USERNAME" ] || [ -z "$NOVA_LICENSE_KEY" ]; then
+            echo "::error::Set the NOVA_USERNAME and NOVA_LICENSE_KEY repository secrets to install Laravel Nova."
+            exit 1
+          fi
+
+          composer config http-basic.nova.laravel.com "$NOVA_USERNAME" "$NOVA_LICENSE_KEY"
 
       # No lockfile is committed, so this resolves fresh — which is what a
       # library wants: CI proves the constraints, not a snapshot.
