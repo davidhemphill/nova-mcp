@@ -28,7 +28,7 @@ class NovaServer extends Server
 {
     protected string $name = 'Laravel Nova';
 
-    protected string $version = '1.0.0';
+    protected string $version = '0.1.0';
 
     /**
      * The Nova registration the last handled message saw.
