@@ -12,6 +12,9 @@ use Hemp\NovaMcp\Tests\Fixtures\Models\User;
 use Hemp\NovaMcp\Tests\Fixtures\Nova\Person;
 use Hemp\NovaMcp\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\JsonSchema\JsonSchemaTypeFactory;
+use Laravel\Ai\Tools\McpServerTool;
+use Laravel\Ai\Tools\Request as AiRequest;
 use Laravel\Mcp\Server\Testing\TestResponse;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Transport\FakeTransporter;
@@ -162,6 +165,24 @@ class NovaMcpToolsTest extends TestCase
             ->assertOk()
             ->assertHasNoErrors()
             ->assertSee(['Ada Lovelace', 'ada@example.com', '"update": true']);
+    }
+
+    #[Test]
+    public function laravel_ai_can_read_a_record_using_a_catalog_tool(): void
+    {
+        $other = User::factory()->create(['name' => 'Grace Hopper', 'email' => 'grace@example.com']);
+        $tool = collect($this->catalog())->first(fn (Tool $tool): bool => $tool->name() === 'nova_users_get');
+        $this->assertInstanceOf(Tool::class, $tool);
+
+        $aiTool = new McpServerTool($tool);
+
+        $this->assertSame('nova_users_get', $aiTool->name());
+        $this->assertArrayHasKey('id', $aiTool->schema(new JsonSchemaTypeFactory));
+
+        $result = json_decode($aiTool->handle(new AiRequest(['id' => (string) $other->getKey()])), true, flags: JSON_THROW_ON_ERROR);
+
+        $this->assertSame('Grace Hopper', $result['fields']['name']);
+        $this->assertSame('grace@example.com', $result['fields']['email']);
     }
 
     #[Test]

@@ -12,7 +12,14 @@ do their job.
 - PHP 8.3+
 - Laravel 11, 12, or 13
 - Nova 5
-- [laravel/mcp](https://github.com/laravel/mcp)
+- [laravel/mcp](https://github.com/laravel/mcp) 1.x
+
+The [Laravel AI SDK](https://github.com/laravel/ai) is optional. Nova MCP can be
+installed alongside Laravel AI 1.2+; that SDK requires Laravel 12.62+ or 13.15+.
+The test suite installs both packages and covers calling a Nova catalog tool
+through the SDK's `McpServerTool` adapter. In-process calls must already have an
+authenticated Nova user; they do not pass through the MCP endpoint's bearer-token
+middleware.
 
 ## Install
 

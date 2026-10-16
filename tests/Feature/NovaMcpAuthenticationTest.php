@@ -60,6 +60,41 @@ class NovaMcpAuthenticationTest extends TestCase
     }
 
     #[Test]
+    public function it_supports_discovery_and_tool_calls_with_the_current_mcp_protocol(): void
+    {
+        $this->withToken($this->tokenFor($this->novaUser(['name' => 'Ada Lovelace'])));
+
+        $meta = [
+            'io.modelcontextprotocol/protocolVersion' => '2026-07-28',
+            'io.modelcontextprotocol/clientCapabilities' => (object) [],
+        ];
+
+        $this->withHeaders([
+            'MCP-Protocol-Version' => '2026-07-28',
+            'Mcp-Method' => 'server/discover',
+        ])->postJson($this->endpoint(), [
+            'jsonrpc' => '2.0',
+            'id' => 1,
+            'method' => 'server/discover',
+            'params' => ['_meta' => $meta],
+        ])->assertOk()
+            ->assertJsonPath('result.capabilities.tools.listChanged', true)
+            ->assertJsonPath('result.supportedVersions.0', '2026-07-28');
+
+        $this->withHeaders([
+            'Mcp-Method' => 'tools/call',
+            'Mcp-Name' => 'nova_overview',
+        ])->postJson($this->endpoint(), [
+            'jsonrpc' => '2.0',
+            'id' => 2,
+            'method' => 'tools/call',
+            'params' => ['_meta' => $meta, 'name' => 'nova_overview', 'arguments' => (object) []],
+        ])->assertOk()
+            ->assertJsonPath('result.isError', false)
+            ->assertSee('Ada Lovelace', escape: false);
+    }
+
+    #[Test]
     public function it_rejects_a_revoked_token(): void
     {
         $user = $this->novaUser();
