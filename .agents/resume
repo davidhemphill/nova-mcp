@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd "$(dirname "${BASH_SOURCE[0]}")/.."
+
+# No database server or development server is needed: tests use SQLite through
+# Testbench. Keep wake-up fast and leave dependency installation to setup.
+if [[ ! -f vendor/autoload.php || ! -x node_modules/.bin/mix ]]; then
+    echo 'Orb dependencies are missing. Run .agents/setup to restore them.' >&2
+    exit 1
+fi
+
+composer check-platform-reqs --no-interaction

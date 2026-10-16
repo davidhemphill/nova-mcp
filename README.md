@@ -168,6 +168,19 @@ allowed. Delete tools tell you what they changed and what they skipped.
 composer test
 ```
 
+The suite boots a Laravel application through Orchestra Testbench, using the
+models, migrations, Nova resources, and provider in `tests/Fixtures`. No separate
+example repository or database server is needed.
+
+### Amp orbs
+
+Set `NOVA_USERNAME` and the secret `NOVA_LICENSE_KEY` in the Amp project's
+environment settings. `.agents/setup` installs PHP 8.4, its extensions, Composer,
+and the PHP and JavaScript dependencies, using the orb's preinstalled Node/npm.
+Nova credentials are passed to Composer in memory, never saved to `auth.json`.
+Warm setup reuses installed dependencies; `.agents/resume` only checks that they
+are present and the PHP platform requirements are satisfied.
+
 ## License
 
 [MIT](LICENSE)

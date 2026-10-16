@@ -1,0 +1,88 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd "$(dirname "${BASH_SOURCE[0]}")/.."
+SECONDS=0
+
+step() {
+    printf '\n[%ss] %s\n' "$SECONDS" "$*"
+}
+
+step 'Checking PHP 8.4 and system dependencies'
+packages=(ca-certificates curl unzip php8.4-cli php8.4-curl php8.4-mbstring php8.4-xml php8.4-zip php8.4-sqlite3)
+missing=()
+for package in "${packages[@]}"; do
+    if [[ $(dpkg-query -W -f='${Status}' "$package" 2>/dev/null || true) != 'install ok installed' ]]; then
+        missing+=("$package")
+    fi
+done
+
+if ((${#missing[@]})); then
+    if [[ ! -f /usr/share/keyrings/debsuryorg-archive-keyring.gpg || ! -f /etc/apt/sources.list.d/php.list ]]; then
+        sudo apt-get update -qq
+        sudo env DEBIAN_FRONTEND=noninteractive apt-get install -y ca-certificates curl
+        keyring=$(mktemp --suffix=.deb)
+        curl -fsSL https://packages.sury.org/debsuryorg-archive-keyring.deb -o "$keyring"
+        sudo dpkg -i "$keyring"
+        rm -f "$keyring"
+        printf '%s\n' 'deb [signed-by=/usr/share/keyrings/debsuryorg-archive-keyring.gpg] https://packages.sury.org/php/ bookworm main' \
+            | sudo tee /etc/apt/sources.list.d/php.list >/dev/null
+    fi
+
+    sudo apt-get update -qq
+    sudo env DEBIAN_FRONTEND=noninteractive apt-get install -y "${missing[@]}"
+fi
+
+sudo update-alternatives --set php /usr/bin/php8.4
+
+step 'Checking Composer'
+if ! command -v composer >/dev/null; then
+    installer=$(mktemp)
+    curl -fsSL https://getcomposer.org/installer -o "$installer"
+    expected=$(curl -fsSL https://composer.github.io/installer.sig)
+    actual=$(php -r 'echo hash_file("sha384", $argv[1]);' "$installer")
+    if [[ "$expected" != "$actual" ]]; then
+        rm -f "$installer"
+        echo 'Composer installer checksum mismatch.' >&2
+        exit 1
+    fi
+    sudo php "$installer" --install-dir=/usr/local/bin --filename=composer --2
+    rm -f "$installer"
+fi
+
+# Node and npm are provided by the orb base image; this project has no version pin.
+node --version
+npm --version
+php --version | head -n 1
+composer --version
+
+step 'Installing PHP dependencies'
+# Project-level package credentials are used only in this process. Never write
+# auth.json: the configured filesystem is shared through project snapshots.
+if [[ -n ${NOVA_USERNAME:-} && -n ${NOVA_LICENSE_KEY:-} ]]; then
+    export COMPOSER_AUTH
+    COMPOSER_AUTH=$(php -r '
+        $auth = json_decode(getenv("COMPOSER_AUTH") ?: "{}", true, flags: JSON_THROW_ON_ERROR);
+        $auth["http-basic"]["nova.laravel.com"] = [
+            "username" => getenv("NOVA_USERNAME"),
+            "password" => getenv("NOVA_LICENSE_KEY"),
+        ];
+        echo json_encode($auth, JSON_THROW_ON_ERROR);
+    ')
+fi
+
+# Libraries do not commit composer.lock. Reuse the snapshot lock when it still
+# matches composer.json, but resolve again after the package requirements change.
+if [[ -f composer.lock ]] && ! composer validate --check-lock --no-check-publish --quiet; then
+    composer update --prefer-dist --no-interaction --no-progress
+else
+    composer install --prefer-dist --no-interaction --no-progress
+fi
+unset COMPOSER_AUTH
+
+step 'Installing JavaScript dependencies'
+# Unlike npm ci, install keeps node_modules restored from a snapshot and checks
+# it against the lockfile instead of deleting and unpacking it on every run.
+npm install --prefer-offline --no-audit --no-fund
+
+step 'Ready: composer test, vendor/bin/pint --test, npm run production'
