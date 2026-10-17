@@ -10,7 +10,7 @@ do their job.
 ## Requirements
 
 - PHP 8.3+
-- Laravel 11, 12, or 13
+- Laravel 12 or 13
 - Nova 5
 - [laravel/mcp](https://github.com/laravel/mcp) 1.x
 
@@ -171,6 +171,9 @@ composer test
 The suite boots a Laravel application through Orchestra Testbench, using the
 models, migrations, Nova resources, and provider in `tests/Fixtures`. No separate
 example repository or database server is needed.
+
+CI runs the full suite, including the Laravel AI adapter, against Laravel 12 and
+13 on PHP 8.3, 8.4, and 8.5.
 
 ### Amp orbs
 

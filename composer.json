@@ -20,7 +20,7 @@
     ],
     "require": {
         "php": "^8.3",
-        "illuminate/support": "^11.0|^12.0|^13.0",
+        "illuminate/support": "^12.0|^13.0",
         "laravel/mcp": "^1.0",
         "laravel/nova": "^5.0"
     },
@@ -28,7 +28,7 @@
         "laravel/ai": "^1.2",
         "laravel/nova-devtool": "^1.7",
         "laravel/pint": "^1.24",
-        "orchestra/testbench": "^11.0",
+        "orchestra/testbench": "^10.0|^11.0",
         "phpunit/phpunit": "^12.5"
     },
     "repositories": [
