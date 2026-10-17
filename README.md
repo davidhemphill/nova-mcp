@@ -14,6 +14,9 @@ do their job.
 - Nova 5
 - [laravel/mcp](https://github.com/laravel/mcp) 1.x
 
+Nova must already be installed in your application using your own Nova license.
+Nova MCP does not include or redistribute Nova.
+
 The [Laravel AI SDK](https://github.com/laravel/ai) is optional. Nova MCP can be
 installed alongside Laravel AI 1.2+; that SDK requires Laravel 12.62+ or 13.15+.
 The test suite installs both packages and covers calling a Nova catalog tool
@@ -43,6 +46,20 @@ public function tools(): array
 
 You'll get a **Nova MCP** item in the Nova sidebar, where you can see the
 published tools and manage tokens.
+
+## Upgrading from 0.1
+
+[Version 0.2.0](https://github.com/davidhemphill/nova-mcp/releases/tag/v0.2.0)
+requires Laravel 12 or 13 and Laravel MCP 1.x. Laravel 11 and Laravel MCP 0.9
+are no longer supported. Upgrade your application's Laravel version first, then
+update the packages together:
+
+```bash
+composer require "hemp/nova-mcp:^0.2" "laravel/mcp:^1.0" --with-all-dependencies
+```
+
+Laravel AI is not required to use the MCP endpoint. If your application uses the
+AI SDK, it can remain installed alongside Nova MCP.
 
 ## Make a token
 
@@ -164,16 +181,40 @@ allowed. Delete tools tell you what they changed and what they skipped.
 
 ## Testing
 
+From a source checkout, install the development dependencies using your Nova
+Composer credentials, then run the suite and lint:
+
 ```bash
+composer install
 composer test
+vendor/bin/pint --test
 ```
 
 The suite boots a Laravel application through Orchestra Testbench, using the
 models, migrations, Nova resources, and provider in `tests/Fixtures`. No separate
-example repository or database server is needed.
+example repository or database server is needed; tests use SQLite, so enable
+PHP's `pdo_sqlite` extension.
 
-CI runs the full suite, including the Laravel AI adapter, against Laravel 12 and
-13 on PHP 8.3, 8.4, and 8.5.
+CI runs the full suite, including the Laravel AI adapter, and lint in all six
+combinations:
+
+| Laravel | Testbench | PHP |
+| --- | --- | --- |
+| 12 | 10 | 8.3, 8.4, 8.5 |
+| 13 | 11 | 8.3, 8.4, 8.5 |
+
+The Laravel AI SDK is installed as a development dependency for these tests,
+not as a runtime dependency for package consumers.
+
+To rebuild the tool's frontend assets after changing `resources/`:
+
+```bash
+npm install
+npm run production
+```
+
+Install Composer dependencies first: the frontend build uses the Nova devtool
+package from `vendor/`.
 
 ### Amp orbs
 
